@@ -17,6 +17,12 @@
                     <li>
                         <router-link :to="{ name: 'contact'}" class="active" >Contact</router-link>
                     </li>
+                    <li>
+                        <router-link :to="{ name: 'login'}" class="active" >Login</router-link>
+                    </li>
+                    <li>
+                        <router-link :to="{ name: 'register'}" class="active" >Register</router-link>
+                    </li>
                 </ul>
             </div>
             <!-- sidebar footer -->

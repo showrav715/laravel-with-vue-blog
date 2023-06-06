@@ -5,6 +5,9 @@ import Blog from "../views/Blog.vue";
 import Contact from "../views/Contact.vue";
 import About from "../views/About.vue";
 import SingleBlog from "../views/SingleBlog.vue";
+import Login from "../views/user/Login.vue";
+import Register from "../views/user/Register.vue";
+import Dashboard from "../views/user/Dashboard.vue";
 
 const routes = [
     {
@@ -32,6 +35,26 @@ const routes = [
         name: "about",
         component: About,
     },
+
+    {
+        path: "/login",
+        name: "login",
+        component: Login,
+    },
+
+    {
+        path: "/register",
+        name: "register",
+        component: Register,
+    },
+
+    {
+        path: "/dashboard",
+        name: "dashboard",
+        component: Dashboard
+    }
+
+
 ];
 
 const router = createRouter({
