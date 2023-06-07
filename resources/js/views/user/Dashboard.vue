@@ -1,14 +1,12 @@
 <template>
-    Dashboard
-
+    <h1>Dashboard</h1>
     {{ user.name }}
     {{ user.email }}
 </template>
 
-
 <script setup>
 import axios from "axios";
-import { onMounted,reactive,ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 
 const user = reactive({});
 onMounted(() => {
@@ -16,8 +14,6 @@ onMounted(() => {
         console.log(response.data);
         user.name = response.data.name;
         user.email = response.data.email;
-        
     });
 });
-
 </script>
