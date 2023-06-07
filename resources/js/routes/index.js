@@ -40,21 +40,22 @@ const routes = [
         path: "/login",
         name: "login",
         component: Login,
+        meta: { guest: true },
     },
 
     {
         path: "/register",
         name: "register",
         component: Register,
+        meta: { guest: true },
     },
 
     {
         path: "/dashboard",
         name: "dashboard",
-        component: Dashboard
-    }
-
-
+        component: Dashboard,
+        meta: { auth: true },
+    },
 ];
 
 const router = createRouter({
@@ -62,18 +63,17 @@ const router = createRouter({
     routes,
 });
 
-// before each route, check if the user is authenticated
+// before each route, check if the user is authenticated and meta is true or not
+router.beforeEach((to, from, next) => {
+    const loggedIn = sessionStorage.getItem("token");
 
-// router.beforeEach((to, from, next) => {
-//     if (to.matched.some((record) => record.meta.requiresAuth)) {
-//         if (!localStorage.getItem("user")) {
-//             next({ name: "login" });
-//         } else {
-//             next();
-//         }
-//     } else {
-//         next();
-//     }
-// });
+    if (to.meta.guest && loggedIn) {
+        next({ name: "dashboard" });
+    } else if (to.meta.auth && !loggedIn) {
+        next({ name: "login" });
+    } else {
+        next();
+    }
+});
 
 export default router;

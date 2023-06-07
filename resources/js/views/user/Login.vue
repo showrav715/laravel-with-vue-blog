@@ -1,24 +1,31 @@
 <template>
     <div id="backend-view">
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" method="post">
             <h3>Login</h3>
-            
+
             <label for="email">Email</label>
             <input type="text" id="email" v-model="data.email" />
-
+            <span v-if="errors.email">{{ errors.email[0] }}</span>
             <label for="password">Password</label>
             <input type="password" id="password" v-model="data.password" />
+            <span v-if="errors.password">{{ errors.password[0] }}</span>
 
-           
+            <span v-if="unauthenticated">{{ unauthenticated }}</span>
             <button type="submit">Login</button>
-            <span>Create an account? <router-link :to="{name:'register'}"> Register</router-link> </span>
+            <span
+                >Create an account?
+                <router-link :to="{ name: 'register' }"> Register</router-link>
+            </span>
         </form>
     </div>
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { inject, reactive, ref } from "vue";
+import axios from "axios";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const data = reactive({
     name: "",
     email: "",
@@ -26,10 +33,30 @@ const data = reactive({
     password_confirmation: "",
 });
 
-const submit = (e)=>{
+const errors = ref({});
+const unauthenticated = ref("");
+const handleAuth = inject("handleAuth");
+
+const submit = (e) => {
     e.preventDefault();
-    console.log(data);
-}
+
+    axios
+        .post("/api/login", data)
+        .then((res) => {
+            sessionStorage.setItem("token", res.data.access_token);
+            handleAuth(true);
+            router.push({ name: "dashboard" });
+        })
+        .catch((err) => {
+            if (err.response.data.status_code == 401) {
+                unauthenticated.value = err.response.data.message;
+                errors.value = "";
+            } else {
+                errors.value = err.response.data.errors;
+                unauthenticated.value = "";
+            }
+        });
+};
 </script>
 
 <style scoped>
@@ -38,6 +65,13 @@ const submit = (e)=>{
     background-color: #f3f4f6;
     display: grid;
     align-items: center;
+}
+span {
+    color: red;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 5px;
+    display: block;
 }
 form {
     width: 400px;

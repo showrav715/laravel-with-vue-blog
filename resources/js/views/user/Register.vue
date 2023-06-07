@@ -1,5 +1,6 @@
 <template>
     <div id="backend-view">
+        <navbar />
         <form @submit.prevent="submit">
             <h3>Sign Up Here</h3>
             <label for="name">Name</label>
@@ -24,7 +25,7 @@
             <button type="submit">Register</button>
             <span
                 >Have an account?<router-link :to="{ name: 'login' }">
-                    Log in</router-link
+                    Log in </router-link
                 ></span
             >
         </form>
@@ -32,7 +33,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { reactive, ref,inject } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 
