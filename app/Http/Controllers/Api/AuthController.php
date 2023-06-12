@@ -33,4 +33,18 @@ class AuthController extends Controller
         }
 
     }
+
+
+    public function logout(Request $request)
+    {
+        // remove all token
+        $request->user()->tokens()->delete();
+        
+
+        return response()->json([
+            'message' => 'Logout success',
+            'status_code' => 200,
+        ], 200);
+        
+    }
 }

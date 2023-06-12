@@ -36,6 +36,8 @@
 import { reactive, ref,inject } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+const handleAuth = inject("handleAuth");
+
 
 const router = useRouter();
 
@@ -54,11 +56,10 @@ const submit = (e) => {
         .post("/api/register", data)
         .then((res) => {
             sessionStorage.setItem("token", res.data.access_token);
+            handleAuth(true);
             router.push({ name: "dashboard" });
-            alert("You have successfully registered");
         })
         .catch((error) => {
-            console.log(error.response.data.errors);
             errors.value = error.response.data.errors;
         });
 };

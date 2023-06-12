@@ -8,6 +8,9 @@ import SingleBlog from "../views/SingleBlog.vue";
 import Login from "../views/user/Login.vue";
 import Register from "../views/user/Register.vue";
 import Dashboard from "../views/user/Dashboard.vue";
+import createCategory from "../views/categories/create.vue";
+import editCategory from "../views/categories/edit.vue";
+import CategoryList from "../views/categories/index.vue";
 
 const routes = [
     {
@@ -54,6 +57,25 @@ const routes = [
         path: "/dashboard",
         name: "dashboard",
         component: Dashboard,
+        meta: { auth: true },
+    },
+
+    {
+        path: "/create-category",
+        name: "createCategory",
+        component: createCategory,
+        meta: { auth: true },
+    },
+    {
+        path: "/category",
+        name: "CategoryList",
+        component: CategoryList,
+        meta: { auth: true },
+    },
+    {
+        path: "/category/edit/:id",
+        name: "EditCategory",
+        component: editCategory,
         meta: { auth: true },
     },
 ];

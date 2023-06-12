@@ -46,6 +46,9 @@
                             >Dashboard</router-link
                         >
                     </li>
+                    <li v-if="auth">
+                        <a href="javascript:;" @click.prevent="handleLogout" class="active">Logout</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -73,19 +76,41 @@
 </template>
 
 <script setup>
+import axios from "axios";
 import { provide, ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 const auth = ref(false);
+const router = useRouter();
 onMounted(() => {
     if (sessionStorage.getItem("token")) {
         auth.value = true;
     }
     provide("auth", auth);
-    
 
-    const handleAuth =(isAuth) => {
+    const handleAuth = (isAuth) => {
         auth.value = isAuth;
         provide("auth", auth);
-    }
+    };
+
     provide("handleAuth", handleAuth);
+   
 });
+
+
+// Logout
+const handleLogout = () => {
+    axios
+        .post("/api/logout")
+        .then((response) => {
+            sessionStorage.removeItem("token");
+            auth.value = false;
+            router.push({ name: "login" });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+
+
 </script>
