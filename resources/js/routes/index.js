@@ -11,6 +11,9 @@ import Dashboard from "../views/user/Dashboard.vue";
 import createCategory from "../views/categories/create.vue";
 import editCategory from "../views/categories/edit.vue";
 import CategoryList from "../views/categories/index.vue";
+import createBlog from "../views/blog/create.vue";
+import BlogList from "../views/blog/Index.vue";
+import EditBlog from "../views/blog/edit.vue";
 
 const routes = [
     {
@@ -76,6 +79,26 @@ const routes = [
         path: "/category/edit/:id",
         name: "EditCategory",
         component: editCategory,
+        meta: { auth: true },
+    },
+
+    // blog
+    {
+        path: "/create-blog",
+        name: "createBlog",
+        component: createBlog,
+        meta: { auth: true },
+    },
+    {
+        path: "/manage/blogs",
+        name: "BlogList",
+        component: BlogList,
+        meta: { auth: true },
+    },
+    {
+        path: "/blog/edit/:slug",
+        name: "EditBlog",
+        component: EditBlog,
         meta: { auth: true },
     },
 ];

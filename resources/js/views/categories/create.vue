@@ -58,17 +58,4 @@ const handleStore = () => {
     padding: 50px;
 }
 
-.success-msg{
-    background-color: #4caf50;
-    color: #fff;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-}
-
-.error{
-    color: red;
-    font-size: 18px;
-    margin-bottom: 10px;
-}
 </style>

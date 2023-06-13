@@ -12,7 +12,7 @@
             <label for="name"><span>Name</span></label>
             <input type="text" id="name" v-model="data.name" />
             <span v-if="errors.name" class="error">{{ errors.name[0] }}</span>
-  
+ 
             <input type="submit" value="Submit" />
           </form>
         </div>
@@ -76,17 +76,5 @@
     height: 90vh;
     padding: 50px;
   }
-  .success-msg{
-    background-color: #4caf50;
-    color: #fff;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-}
 
-.error{
-    color: red;
-    font-size: 18px;
-    margin-bottom: 10px;
-}
   </style>

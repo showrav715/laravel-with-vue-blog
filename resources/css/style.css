@@ -460,6 +460,20 @@ textarea {
   }
 }
 
+.success-msg{
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.error{
+  color: red;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
 @media (max-width: 600px) {
   /* Blog */
   .cards-blog {
