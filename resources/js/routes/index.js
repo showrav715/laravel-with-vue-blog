@@ -96,7 +96,7 @@ const routes = [
         meta: { auth: true },
     },
     {
-        path: "/blog/edit/:slug",
+        path: "/blog/edit/:id",
         name: "EditBlog",
         component: EditBlog,
         meta: { auth: true },

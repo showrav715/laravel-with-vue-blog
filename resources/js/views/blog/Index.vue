@@ -2,10 +2,10 @@
     <div class="categories-list">
         <h1>Posts List</h1>
         <!-- success message -->
-        <!-- <div class="success-msg" v-if="success">
+        <div class="success-msg" v-if="success">
         <i class="fa fa-check"></i>
         Post deleted successfully
-      </div> -->
+      </div>
         <!-- <div class="success-msg" v-if="editSuccess">
         <i class="fa fa-check"></i>
         Post edited successfully
@@ -18,11 +18,11 @@
             <div>
                 <router-link
                     class="edit-link btn"
-                    :to="{ name: 'EditBlog', params: { slug: post.slug } }"
+                    :to="{ name: 'EditBlog', params: { id: post.id } }"
                     >Edit</router-link
                 >
             </div>
-            <input type="button" value="Delete" class="delete btn" />
+            <input type="button" @click="handleDelete(post.id)" value="Delete" class="delete btn" />
         </div>
         <div class="index-categories">
             <router-link :to="{ name: 'createBlog' }"
@@ -35,7 +35,7 @@
 import axios from "axios";
 import { ref, onMounted } from "vue";
 const posts = ref([]);
-
+const success = ref(false);
 onMounted(() => {
     getBlogs();
 });
@@ -47,9 +47,17 @@ const getBlogs = () => {
             posts.value = response.data.data;
         })
         .catch((error) => {
-            console.log(error);
+           posts.value = [];
         });
 };
+
+const handleDelete = (id) => {
+    axios.delete("/api/blog/" + id).then((response) => {
+        getBlogs();
+        success.value = true;
+    });
+}
+
 </script>
 
 <style scoped>

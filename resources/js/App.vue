@@ -47,7 +47,12 @@
                         >
                     </li>
                     <li v-if="auth">
-                        <a href="javascript:;" @click.prevent="handleLogout" class="active">Logout</a>
+                        <a
+                            href="javascript:;"
+                            @click.prevent="handleLogout"
+                            class="active"
+                            >Logout</a
+                        >
                     </li>
                 </ul>
             </div>
@@ -69,7 +74,7 @@
                     <a href=""><i class="fab fa-instagram"></i></a>
                     <a href=""><i class="fab fa-twitter"></i></a>
                 </div>
-                <small>&copy; 2021 Blog</small>
+                <small>&copy; 2023 Blog</small>
             </footer>
         </main>
     </div>
@@ -93,9 +98,7 @@ onMounted(() => {
     };
 
     provide("handleAuth", handleAuth);
-   
 });
-
 
 // Logout
 const handleLogout = () => {
@@ -112,5 +115,5 @@ const handleLogout = () => {
 };
 
 
-
+provide("handleLogout", handleLogout);
 </script>

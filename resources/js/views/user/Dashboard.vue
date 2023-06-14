@@ -1,6 +1,6 @@
 <template>
     <div id="backend-view">
-        <div class="logout"><a href="#" @click="logout">Log out</a></div>
+        <div class="logout"><a href="#" @click="handleLogout">Log out</a></div>
         <h1 class="heading">Dashboard</h1>
         <span>Hi {{ user.name }}!</span>
         <div class="links">
@@ -34,9 +34,11 @@
 
 <script setup>
 import axios from "axios";
-import { onMounted, reactive, ref } from "vue";
+import { inject, onMounted, reactive, ref } from "vue";
 
 const user = reactive({});
+const handleLogout = inject("handleLogout");
+
 onMounted(() => {
     axios.get("/api/user").then((response) => {
         user.name = response.data.name;

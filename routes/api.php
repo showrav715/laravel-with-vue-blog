@@ -36,8 +36,8 @@ Route::delete('categories/{category}', [CategoryController::class, 'destroy']);
 Route::get('blogs', [BlogController::class, 'index']);
 Route::get('blog/{slug}', [BlogController::class, 'show']);
 Route::post('blog/store', [BlogController::class, 'store']);
-Route::put('blog/{post:slug}', [BlogController::class, 'update']);
-Route::delete('blog/{post:slug}', [BlogController::class, 'destroy']);
+Route::put('blog/update/{id}', [BlogController::class, 'update']);
+Route::delete('blog/{id}', [BlogController::class, 'destroy']);
 
 
 });

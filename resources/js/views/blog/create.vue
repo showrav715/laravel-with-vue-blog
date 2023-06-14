@@ -93,7 +93,8 @@ const handleStore = () => {
         .post("/api/blog/store", data, {
             headers: {
                 "Content-Type": "multipart/form-data",
-            },
+               
+            }
         })
         .then((res) => {
             success.value = true;

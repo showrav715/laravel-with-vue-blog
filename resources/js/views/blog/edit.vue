@@ -9,7 +9,7 @@
             </div>
             <!-- Contact Form -->
             <div class="contact-form">
-                <form>
+                <form @submit.prevent="handleUpdate">
                     <!-- Title -->
                     <label for="title"><span>Title</span></label>
                     <input type="text" id="title" v-model="post.title" />
@@ -25,7 +25,7 @@
                         errors.image[0]
                     }}</span>
                     <div class="preview">
-                        <img :src="post.url"  alt="" />
+                        <img :src="post.url" alt="" />
                     </div>
                     <br />
 
@@ -47,7 +47,7 @@
                         errors.category_id[0]
                     }}</span>
                     <br />
-                    
+
                     <!-- Body-->
                     <label for="body"><span>Body</span></label>
                     <textarea id="body" v-model="post.body"></textarea>
@@ -66,10 +66,12 @@ import axios from "axios";
 import { ref, reactive, onMounted } from "vue";
 import { useRoute } from "vue-router";
 const post = reactive({
+    id: "",
     title: "",
     url: "",
     category_id: "",
     body: "",
+    image: "",
 });
 const errors = ref([]);
 const success = ref(false);
@@ -94,8 +96,9 @@ const handleGetData = () => {
 
 const getBlog = () => {
     axios
-        .get("/api/blog/" + router.params.slug)
+        .get("/api/blog/" + router.params.id)
         .then((res) => {
+            post.id = res.data.id;
             post.title = res.data.title;
             post.url = res.data.image;
             post.category_id = res.data.category_id;
@@ -107,15 +110,41 @@ const getBlog = () => {
         });
 };
 
-
 const getFile = (e) => {
-    
     post.image = e.target.files[0];
     const reader = new FileReader();
     reader.onloadend = () => {
         post.url = reader.result;
     };
     reader.readAsDataURL(e.target.files[0]);
+};
+
+const handleUpdate = () => {
+
+    const formdata = new FormData();
+    formdata.append("title", post.title);
+    formdata.append("image", post.image);
+    formdata.append("category_id", post.category_id);
+    formdata.append("body", post.body);
+    formdata.append("_method", "PUT");
+
+
+
+    axios
+        .post("/api/blog/update/" + post.id, formdata, {
+            headers: {
+                "content-Type": "multipart/form-data",
+            },
+        })
+        .then((res) => {
+            console.log(res);
+            success.value = true;
+            errors.value = [];
+        })
+        .catch((err) => {
+            success.value = false;
+            errors.value = err.response.data.errors;
+        });
 };
 </script>
 

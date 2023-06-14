@@ -13,7 +13,7 @@ class BlogController extends Controller
 {
     public function index()
     {
-        if(Blog::latest()->count() > 0){
+        if(Blog::count() > 0){
             return response(['data'=>BlogResource::collection(Blog::latest()->paginate(10)),'status'=>1]);
         }else{
             return response()->json([
@@ -44,7 +44,6 @@ class BlogController extends Controller
             $filename = time() . '.' . $extension;
             $file->move('blogs/', $filename);
             $post->image = $filename;
-
         }
         $post->title = $title;
         $post->category_id = $category_id;
@@ -61,9 +60,9 @@ class BlogController extends Controller
 
     }
 
-    public function show($slug)
+    public function show($id)
     {
-        $post = Blog::where('slug', $slug)->firstOrFail();
+        $post = Blog::findOrFail($id);
         if (auth()->user()->id !== $post->user->id) {
             return abort(403);
         }
@@ -71,28 +70,37 @@ class BlogController extends Controller
     }
 
 
-    public function update(Request $request, Blog $post)
+    public function update(Request $request, $id)
     {
+        
+       
+        $post = Blog::findOrFail($id);
+    
         if (auth()->user()->id !== $post->user->id) {
             return abort(403);
         }
+
         $request->validate([
             'title' => 'required',
-            'file' => 'nullable | image',
+             'image' => 'nullable | image',
             'body' => 'required',
             'category_id' => 'required',
         ]);
 
+     
         $title = $request->title;
         $category_id = $request->category_id;
 
         $slug = Str::slug($title, '-') . '-' . $post->id;
         $body = $request->input('body');
 
-        if ($request->file('file')) {
-            File::delete($post->imagePath);
-            $imagePath = 'storage/' . $request->file('file')->store('postsImages', 'public');
-            $post->imagePath = $imagePath;
+         if ($request->hasFile('image')) {
+            unlink('blogs/' . $post->image);
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $extension;
+            $file->move('blogs/', $filename);
+            $post->image = $filename;
         }
 
         // create and save post
@@ -100,15 +108,21 @@ class BlogController extends Controller
         $post->category_id = $category_id;
         $post->slug = $slug;
         $post->body = $body;
-        return $post->save();
+        $post->update();
+        return response()->json([
+            'message' => 'Post updated successfully',
+            'post' => $post,
+        ], 201
+        );
     }
 
-    public function destroy(Blog $post)
+    public function destroy($id)
     {
+        $post = Blog::findOrFail($id);
         if (auth()->user()->id !== $post->user->id) {
             return abort(403);
         }
-
+        unlink('blogs/' . $post->image);
         return $post->delete();
     }
 }
